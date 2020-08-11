@@ -1,0 +1,55 @@
+{
+    "auth": {
+        "bookstoreappd871de66": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false
+        }
+    },
+    "storage": {
+        "imagesofbooks": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation"
+        }
+    },
+    "function": {
+        "ProcessPayment": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": []
+        },
+        "createOrder": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": []
+        }
+    },
+    "api": {
+        "bookstoreapp": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [
+                        {
+                            "authenticationType": "API_KEY",
+                            "apiKeyConfig": {
+                                "description": "guest users",
+                                "apiKeyExpirationDays": 365
+                            }
+                        }
+                    ],
+                    "defaultAuthentication": {
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authbookstoreappd871de66"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
